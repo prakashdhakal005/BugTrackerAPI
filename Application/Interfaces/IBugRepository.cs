@@ -14,6 +14,9 @@ namespace BugTrackerAPI.Application.Interfaces
 
         Task SaveChangesAsync();
         Task<List<Bug>> GetAllAsync();
+        Task<List<Bug>> GetByUserIdAsync(string userId);
+        Task<Bug?> GetUnassignedByIdAsync(int bugId);
+        Task<List<Bug>> GetByAssignedDeveloperIdAsync(string developerId);
 
     }
 }

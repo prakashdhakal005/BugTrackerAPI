@@ -47,13 +47,44 @@ namespace BugTrackerAPI.Controllers
         }
 
         [HttpGet("getAll")]
-        [Authorize(Roles = $"{AppRoles.User},{AppRoles.Admin}")]
+        [Authorize(Roles = $"{AppRoles.User},{AppRoles.Developer}")]
         public async Task<IActionResult> GetAll()
         {
             var bugs = await _bugService.GetAllBugsAsync();
             return Ok(bugs);
         }
 
+        [HttpGet("my")]
+        [Authorize(Roles = AppRoles.User)]
+        public async Task<IActionResult> GetMyBugs()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var bugs = await _bugService.GetBugsByUserIdAsync(userId);
+            return Ok(bugs);
+        }
+
+        [HttpPut("{id}/assign")]
+        [Authorize(Roles = AppRoles.Developer)]
+        public async Task<IActionResult> AssignToMe(int id)
+        {
+            var developerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            await _bugService.AssignBugToDeveloperAsync(id, developerId);
+
+            return Ok("Bug assigned successfully");
+        }
+
+        [HttpGet("assigned")]
+        [Authorize(Roles = AppRoles.Developer)]
+        public async Task<IActionResult> GetAssignedToMe()
+        {
+            var developerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var bugs = await _bugService
+                .GetAssignedBugsForDeveloperAsync(developerId);
+
+            return Ok(bugs);
+        }
 
     }
 

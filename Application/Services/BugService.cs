@@ -60,6 +60,27 @@ namespace BugTrackerAPI.Application.Services
         {
             return await _bugRepository.GetAllAsync();
         }
+        public async Task<List<Bug>> GetBugsByUserIdAsync(string userId)
+        {
+            return await _bugRepository.GetByUserIdAsync(userId);
+        }
+
+        public async Task AssignBugToDeveloperAsync(int bugId, string developerId)
+        {
+            var bug = await _bugRepository.GetUnassignedByIdAsync(bugId);
+
+            if (bug == null)
+                throw new Exception("Bug not found or already assigned");
+
+            bug.AssignedToUserId = developerId;
+            bug.Status = BugStatus.InProgress;
+
+            await _bugRepository.SaveChangesAsync();
+        }
+        public async Task<List<Bug>> GetAssignedBugsForDeveloperAsync(string developerId)
+        {
+            return await _bugRepository.GetByAssignedDeveloperIdAsync(developerId);
+        }
 
     }
 }

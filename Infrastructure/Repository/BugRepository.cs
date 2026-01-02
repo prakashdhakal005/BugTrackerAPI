@@ -53,7 +53,27 @@ namespace BugTrackerAPI.Infrastructure.Repository
                 .OrderByDescending(b => b.CreatedAt)
                 .ToListAsync();
         }
-
+        public async Task<List<Bug>> GetByUserIdAsync(string userId)
+        {
+            return await _context.Bugs
+                .Where(b => b.CreatedByUserId == userId)
+                .OrderByDescending(b => b.CreatedAt)
+                .ToListAsync();
+        }
+        public async Task<Bug?> GetUnassignedByIdAsync(int bugId)
+        {
+            return await _context.Bugs
+                .FirstOrDefaultAsync(b =>
+                    b.Id == bugId &&
+                    b.AssignedToUserId == null);
+        }
+        public async Task<List<Bug>> GetByAssignedDeveloperIdAsync(string developerId)
+        {
+            return await _context.Bugs
+                .Where(b => b.AssignedToUserId == developerId)
+                .OrderByDescending(b => b.CreatedAt)
+                .ToListAsync();
+        }
 
         public async Task SaveChangesAsync()
         {

@@ -10,6 +10,9 @@ namespace BugTrackerAPI.Application.Interfaces
         Task UpdateBugStatusAsync(int bugId, BugStatus status, string developerId);
         Task<List<Bug>> SearchUnassignedBugsAsync(BugSearchDto dto);
         Task<List<Bug>> GetAllBugsAsync();
+        Task<List<Bug>> GetBugsByUserIdAsync(string userId);
+        Task AssignBugToDeveloperAsync(int bugId, string developerId);
+        Task<List<Bug>> GetAssignedBugsForDeveloperAsync(string developerId);
 
     }
 }
