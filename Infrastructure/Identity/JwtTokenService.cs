@@ -22,11 +22,13 @@ namespace BugTrackerAPI.Infrastructure.Identity
         {
             var claims = new[]
             {
-                //new Claim(ClaimTypes.NameIdentifier, user.Id),
-                //new Claim(ClaimTypes.Email, user.Email)
-                new Claim("NameIdentifier", user.Id),
-                new Claim("Email", user.Email),
-                new Claim("Role", role),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, role),
+
+                //new Claim("NameIdentifier", user.Id),
+                //new Claim("Email", user.Email),
+                //new Claim("Roles", role),
 
             };
 
